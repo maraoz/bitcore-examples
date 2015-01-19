@@ -1,0 +1,20 @@
+{
+  "name": "bitcore-submodule-test",
+  "version": "0.0.0",
+  "authors": [
+    "Manuel Araoz <manuelaraoz@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bitcore": "~0.8.6",
+    "bitcore-ecies": "~0.0.2",
+    "bitcore-channel": "~0.1.2"
+  }
+}

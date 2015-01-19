@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bitcore ECIES browser usage</title>
+
+  <script src="bitcore.min.js"></script>
+  <script src="bower_components/bitcore-ecies/bitcore-ecies.min.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+    var bitcore = require('bitcore');
+    var ECIES = require('bitcore-ecies');
+    var PrivateKey = bitcore.PrivateKey;
+
+    var alice = new PrivateKey();
+    var bob = new PrivateKey();
+
+    var message = 'a secret message!1!!';
+    var encryptor = new ECIES()
+      .privateKey(alice)
+      .publicKey(bob.toPublicKey());
+
+    var encrypted = encryptor.encrypt(message);
+    
+    console.log(encrypted.toString());
+    var decryptor = new ECIES()
+      .privateKey(bob)
+      .publicKey(alice.toPublicKey());
+
+    var decrypted = decryptor.decrypt(encrypted);
+    console.log(decrypted.toString());
+
+
+  </script>
+
+</body>
+
+</html>
