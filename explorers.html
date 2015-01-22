@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bitcore ECIES browser usage</title>
+
+  <script src="bower_components/bitcore/bitcore.min.js"></script>
+  <script src="bower_components/bitcore-explorers/bitcore-explorers.min.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+    // NOTE: THIS IS A WORK IN PROGRESS, NOT WORKING YET
+
+    var bitcore = require('bitcore');
+    var explorers = require('bitcore-explorers');
+    var insight = new explorers.Insight();
+
+    insight.getUnspentUtxos('16cou7Ht6WjTzuFyDBnht9hmvXytg6XdVT', function(err, utxos) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(utxos);
+      }
+    });
+  </script>
+
+</body>
+
+</html>
