@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bitcore payment channels browser usage</title>
+
+  <script src="bower_components/bitcore/bitcore.min.js"></script>
+  <script src="bower_components/bitcore-mnemonic/bitcore-mnemonic.min.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+
+    var bitcore = require('bitcore');
+    var Mnemonic = require('bitcore-mnemonic');
+    var code = new Mnemonic(Mnemonic.Words.JAPANESE);
+    console.log(code.toString());
+    console.log('Calculating HD master extended private key for generated mnemonic...');
+    var xpriv = code.toHDPrivateKey();
+    console.log(xpriv.toString());
+  </script>
+
+</body>
+
+</html>
