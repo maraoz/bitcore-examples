@@ -17,6 +17,7 @@
     "bitcore-ecies": "^0.9.2",
     "bitcore": "^0.9.3",
     "bitcore-mnemonic": "^0.9.1",
-    "bitcore-explorers": "~0.9.1"
+    "bitcore-explorers": "~0.9.1",
+    "bitcore-payment-protocol": "~0.9.1"
   }
 }
