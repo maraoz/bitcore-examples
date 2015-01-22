@@ -3,38 +3,86 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Bitcore ECIES browser usage</title>
+  <title>Bitcore payment channels browser usage</title>
 
-  <script src="bitcore.min.js"></script>
-  <script src="bower_components/bitcore-ecies/bitcore-ecies.min.js"></script>
+  <script src="bower_components/bitcore/bitcore.min.js"></script>
+  <script src="bower_components/bitcore-channel/bitcore-channel.min.js"></script>
 </head>
 
 <body>
 
   <script type="text/javascript">
+
+    // NOTE: THIS IS A WORK IN PROGRESS, NOT WORKING YET
+
     var bitcore = require('bitcore');
-    var ECIES = require('bitcore-ecies');
-    var PrivateKey = bitcore.PrivateKey;
+    var Provider = require('bitcore-channel').Provider;
+    var Consumer = require('bitcore-channel').Consumer;
+    var Script = bitcore.Script;
 
-    var alice = new PrivateKey();
-    var bob = new PrivateKey();
+    var paymentAddress = 'mig4mc6q7PTQ2YZ9ax5YtR4gjARfoqJSZd';
 
-    var message = 'a secret message!1!!';
-    var encryptor = new ECIES()
-      .privateKey(alice)
-      .publicKey(bob.toPublicKey());
+    var provider = new Provider({
+      network: 'testnet',
+      paymentAddress: paymentAddress
+    });
+    console.info('Provider: this public key can be shared with consumers: ' + provider.getPublicKey());
 
-    var encrypted = encryptor.encrypt(message);
-    
-    console.log(encrypted.toString());
-    var decryptor = new ECIES()
-      .privateKey(bob)
-      .publicKey(alice.toPublicKey());
+    var providerPublicKey = provider.getPublicKey();
+    var refundAddress = 'mzCXqcsLBerwyoRZzBFQELHaJ1ZtBSxxe6';
 
-    var decrypted = decryptor.decrypt(encrypted);
-    console.log(decrypted.toString());
+    var consumer = new Consumer({
+      network: 'testnet',
+      providerPublicKey: providerPublicKey.toString('hex'),
+      refundAddress: refundAddress
+    });
+
+    console.info('Send bitcoins to ' + consumer.fundingAddress.toString() +
+      ' to fund the channel');
 
 
+    var utxo = {
+      "address": consumer.fundingAddress.toString(),
+      "txid": "9c4f7e10d80768f3d9e22faa220ee517e168c3d3dac2f2d36e6d8cc6386a9d62",
+      "vout": 1,
+      "ts": 1421692333,
+      "scriptPubKey": Script.fromAddress(consumer.fundingAddress).toBuffer().toString('hex'),
+      "amount": 0.14825,
+      "confirmations": 10
+    };
+
+    console.log('Funding for channel: ');
+    console.log(utxo);
+
+    consumer.processFunding([utxo]);
+
+    var refundInfo = consumer.setupRefund();
+    console.log('Client refund setup: ');
+    console.log(refundInfo.toString());
+    var signedRefundInfo = provider.signRefund(refundInfo);
+    console.log('Provider refund completed: ');
+    console.log(signedRefundInfo.toString());
+
+    var refundValid = consumer.validateRefund(signedRefundInfo);
+    console.log('Client says refund transaction is ' + (refundValid ? '' : 'in') + 'valid');
+    if (refundValid) {
+
+      console.log('Payment channel established!');
+      var payment = consumer.incrementPaymentBy(4000); // satoshis
+
+      var validPayment = provider.validPayment(payment);
+      if (validPayment) {
+        console.log('Provider: valid payment received! Sending service...');
+      } else {
+        console.log('Provider: invalid payment received. Closing channel');
+      }
+
+      // ...
+      // repeat with multiple payments
+
+    } else {
+      console.log('Refund transaction not valid, payment channel was not established');
+    }
   </script>
 
 </body>
