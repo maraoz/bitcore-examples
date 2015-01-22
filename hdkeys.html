@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Bitcore HD keys browser usage</title>
+
+  <script src="bower_components/bitcore/bitcore.min.js"></script>
+</head>
+
+<body>
+
+  <script type="text/javascript">
+
+    var bitcore = require('bitcore');
+    var HDPrivateKey = bitcore.HDPrivateKey;
+    var privateKey = new HDPrivateKey();
+    var derived = privateKey.derive("m/0'");
+    var derivedByNumber = privateKey.derive(1).derive(2, true);
+    var derivedByArgument = privateKey.derive("m/1/2'");
+    console.log(derivedByNumber.xprivkey === derivedByArgument.xprivkey);
+    console.log(derivedByNumber.toString());
+    console.log(derivedByNumber.hdPublicKey.toString());
+  </script>
+
+</body>
+
+</html>
