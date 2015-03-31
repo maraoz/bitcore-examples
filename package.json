@@ -1,0 +1,23 @@
+{
+  "name": "submodule-test",
+  "version": "1.0.0",
+  "description": "Simple bitcore browser examples",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maraoz/bitcore-submodule-examples.git"
+  },
+  "author": "maraoz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/maraoz/bitcore-submodule-examples/issues"
+  },
+  "homepage": "https://github.com/maraoz/bitcore-submodule-examples",
+  "dependencies": {
+    "bitcore": "^0.11.6",
+    "bitcore-mnemonic": "^0.10.1"
+  }
+}
