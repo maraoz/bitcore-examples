@@ -1,5 +1,7 @@
 'use strict';
 
+// example from: https://labs.bitpay.com/t/generating-and-checking-p2sh-signatures
+
 var bitcore = require('bitcore');
 var PrivateKey = bitcore.PrivateKey;
 var Script = bitcore.Script;
